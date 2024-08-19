@@ -18,6 +18,7 @@ router.post('/signup', async (req, res) => {
             res.status(200).json(userData);
         });
     } catch (err) {
+        console.log('Error in signup route:', err); // Debugging log for signup
         res.status(500).json(err);
     }
 });
@@ -28,6 +29,7 @@ router.post('/login', async (req, res) => {
         const userData = await User.findOne({ where: { username: req.body.username } });
 
         if (!userData) {
+            console.log('User not found:', req.body.username); // Debugging log for user not found
             res.status(400).json({ message: 'Incorrect username or password, please try again' });
             return;
         }
@@ -35,6 +37,7 @@ router.post('/login', async (req, res) => {
         const validPassword = await bcrypt.compare(req.body.password, userData.password);
 
         if (!validPassword) {
+            console.log('Invalid password for user:', req.body.username); // Debugging log for invalid password
             res.status(400).json({ message: 'Incorrect username or password, please try again' });
             return;
         }
@@ -47,6 +50,7 @@ router.post('/login', async (req, res) => {
         });
 
     } catch (err) {
+        console.log('Error in login route:', err); // Debugging log for general login errors
         res.status(500).json(err);
     }
 });
