@@ -1,3 +1,13 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const signupForm = document.querySelector('.signup-form');
+
+  if (signupForm) {
+    signupForm.addEventListener('submit', signupFormHandler);
+  } else {
+    console.error('Signup form not found in the DOM');
+  }
+});
+
 const signupFormHandler = async (event) => {
   event.preventDefault();
 
@@ -18,7 +28,3 @@ const signupFormHandler = async (event) => {
     }
   }
 };
-
-document
-  .querySelector('.signup-form')
-  .addEventListener('submit', signupFormHandler);
