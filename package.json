@@ -9,7 +9,7 @@
     "seed": "node seeds/seed.js"
   },
   "author": "",
-  "license": "MITS",
+  "license": "MIT",
   "dependencies": {
     "assert": "^2.1.0",
     "bcrypt": "^5.1.1",
