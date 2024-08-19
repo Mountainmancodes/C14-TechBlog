@@ -1,56 +1,73 @@
 const router = require('express').Router();
 const { User } = require('../../models');
+const withAuth = require('../../utils/auth');
+const bcrypt = require('bcrypt');
 
-router.post('/signup', async (req, res) => {
-  try {
-    const newUser = await User.create(req.body);
-
-    req.session.save(() => {
-      req.session.user_id = newUser.id;
-      req.session.loggedIn = true;
-
-      res.status(200).json(newUser);
-    });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
+// Login http://localhost:3001/api/users/login Body: { "username": "newuser", "password": "password123" }
 router.post('/login', async (req, res) => {
   try {
-    const user = await User.findOne({ where: { username: req.body.username } });
+    const userData = await User.findOne({
+      where: { username: req.body.username },
+    });
 
-    if (!user) {
-      res.status(400).json({ message: 'Incorrect username or password, please try again' });
+    if (!userData) {
+      res
+        .status(400)
+        .json({ message: 'Incorrect username or password, please try again' });
       return;
     }
 
-    const validPassword = user.checkPassword(req.body.password);
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      userData.password,
+    );
 
     if (!validPassword) {
-      res.status(400).json({ message: 'Incorrect username or password, please try again' });
+      res
+        .status(400)
+        .json({ message: 'Incorrect username or password, please try again' });
       return;
     }
 
     req.session.save(() => {
-      req.session.user_id = user.id;
+      req.session.user_id = userData.id;
       req.session.loggedIn = true;
-      
-      res.status(200).json({ user, message: 'You are now logged in!' });
-    });
 
+      res.json({ user: userData, message: 'You are now logged in!' });
+    });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(400).json(err);
   }
 });
 
-router.post('/logout', (req, res) => {
+// Logout http://localhost:3001/api/users/logout
+router.post('/logout', withAuth, (req, res) => {
   if (req.session.loggedIn) {
     req.session.destroy(() => {
       res.status(204).end();
     });
   } else {
     res.status(404).end();
+  }
+});
+
+// Signup http://localhost:3001/api/users/signup Body: { "username": "newuser", "password": "password123" }
+router.post('/signup', async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const userData = await User.create({
+      username: req.body.username,
+      password: hashedPassword,
+    });
+
+    req.session.save(() => {
+      req.session.user_id = userData.id;
+      req.session.loggedIn = true;
+
+      res.status(200).json(userData);
+    });
+  } catch (err) {
+    res.status(400).json(err);
   }
 });
 
