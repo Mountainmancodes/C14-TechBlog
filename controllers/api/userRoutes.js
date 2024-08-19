@@ -26,35 +26,37 @@ router.post('/signup', async (req, res) => {
 
 // Login route (no withAuth needed)
 router.post('/login', async (req, res) => {
-    try {
-        console.log('Login data:', req.body);
-        const userData = await User.findOne({ where: { username: req.body.username } });
+  try {
+      console.log('Login request received:', req.body);
+      const userData = await User.findOne({ where: { username: req.body.username } });
 
-        if (!userData) {
-            res.status(400).json({ message: 'Incorrect username or password, please try again' });
-            return;
-        }
+      if (!userData) {
+          console.log('No user found with that username.');
+          res.status(400).json({ message: 'Incorrect username or password, please try again' });
+          return;
+      }
 
-        const validPassword = await bcrypt.compare(req.body.password, userData.password);
+      const validPassword = await bcrypt.compare(req.body.password, userData.password);
+      console.log('Valid password:', validPassword);
 
-        console.log('Password valid:', validPassword);
+      if (!validPassword) {
+          console.log('Invalid password provided.');
+          res.status(400).json({ message: 'Incorrect username or password, please try again' });
+          return;
+      }
 
-        if (!validPassword) {
-            res.status(400).json({ message: 'Incorrect username or password, please try again' });
-            return;
-        }
+      req.session.save(() => {
+          req.session.user_id = userData.id;
+          req.session.loggedIn = true;
 
-        req.session.save(() => {
-            req.session.user_id = userData.id;
-            req.session.loggedIn = true;
+          console.log('User logged in:', userData.username);
+          res.json({ user: userData, message: 'You are now logged in!' });
+      });
 
-            res.json({ user: userData, message: 'You are now logged in!' });
-        });
-
-    } catch (err) {
-        console.error('Login error:', err);
-        res.status(500).json(err);
-    }
+  } catch (err) {
+      console.error('Login error:', err);
+      res.status(500).json(err);
+  }
 });
 
 // Logout route (protected with withAuth)
