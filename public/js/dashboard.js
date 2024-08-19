@@ -34,8 +34,15 @@ const cancelNewPost = () => {
 const editHandler = (event) => {
   if (event.target.matches('.edit-post')) {
     const postEl = event.target.closest('.post');
-    postEl.querySelector('.edit-form').style.display = 'block';
-    postEl.querySelector('.post-actions').style.display = 'none';
+    const editForm = postEl.querySelector('.edit-form');
+    const postActions = postEl.querySelector('.post-actions');
+
+    if (editForm && postActions) {
+      editForm.style.display = 'block';
+      postActions.style.display = 'none';
+    } else {
+      console.error('Edit form or post actions not found');
+    }
   }
 };
 
@@ -43,8 +50,15 @@ const editHandler = (event) => {
 const cancelEditHandler = (event) => {
   if (event.target.matches('.cancel-edit')) {
     const postEl = event.target.closest('.post');
-    postEl.querySelector('.edit-form').style.display = 'none';
-    postEl.querySelector('.post-actions').style.display = 'block';
+    const editForm = postEl.querySelector('.edit-form');
+    const postActions = postEl.querySelector('.post-actions');
+
+    if (editForm && postActions) {
+      editForm.style.display = 'none';
+      postActions.style.display = 'block';
+    } else {
+      console.error('Edit form or post actions not found');
+    }
   }
 };
 
