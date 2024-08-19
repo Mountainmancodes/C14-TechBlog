@@ -1,33 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{title}}</title>
-  <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
-  <header>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/dashboard">Dashboard</a>
-      {{#if loggedIn}}
-      <a href="/logout">Logout</a>
-      {{else}}
-      <a href="/login">Login</a>
-      {{/if}}
-    </nav>
-    <div class="logo">
-      <h1>The Tech Blog</h1>
-    </div>
-  </header>
-
-  <main>
-    <section class="featured-post">
-      <h2>Why MVC is so important</h2>
-      <p>MVC allows developers to maintain a true separation of concerns, devising their code between the Model layer for data, the View layer for design, and the Controller layer for application logic.</p>
-      <p class="post-info">Posted by Xandromus on 5/8/2020</p>
-    </section>
-  </main>
-</body>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>{{title}}</title>
+    <link rel='stylesheet' href='/css/jass.css' />
+    <link rel='stylesheet' href='/css/style.css' />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href='/'>Home</a>
+        {{#if loggedIn}}
+          <a href='/dashboard'>Dashboard</a>
+          <a href='#' id='logout'>Logout</a>
+        {{else}}
+          <a href='/signup'>Sign Up</a>
+          <a href='/login'>Login</a>
+        {{/if}}
+      </nav>
+    </header>
+    <main class='container'>
+      {{{body}}}
+    </main>
+    {{#if loggedIn}}
+      <script src='/js/logout.js'></script>
+      <script src='/js/comment.js'></script>
+    {{/if}}
+  </body>
 </html>
