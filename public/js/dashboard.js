@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Event Listeners for New Post Button and Cancel Button
+  // Ensure the .post-list element exists before attaching event listeners
   const postList = document.querySelector('.post-list');
   if (postList) {
     document.querySelector('#new-post').addEventListener('click', () => {
