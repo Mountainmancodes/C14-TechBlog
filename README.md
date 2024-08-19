@@ -1,6 +1,6 @@
 # Tech Blog
 
-Tech Blog is a CMS-style blog site where developers can publish their posts and comment on others' posts. This project is built using Node.js, Express.js, Sequelize, Handlebars.js, and features user authentication.
+Tech Blog is in a MVC-style. Tech Blog is a site where developers can publish their ideas on Tech and comment on others' posts. This project is built using Node.js, Express.js, Sequelize, Handlebars.js, features user authentication and allows CRUD operations.
 
 ## Table of Contents
 
