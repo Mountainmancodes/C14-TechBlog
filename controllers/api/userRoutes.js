@@ -6,6 +6,7 @@ const withAuth = require('../../utils/auth');
 // Signup route (no withAuth needed)
 router.post('/signup', async (req, res) => {
     try {
+        console.log('Signup data:', req.body);
         const userData = await User.create({
             username: req.body.username,
             password: await bcrypt.hash(req.body.password, 10),
@@ -18,7 +19,7 @@ router.post('/signup', async (req, res) => {
             res.status(200).json(userData);
         });
     } catch (err) {
-        console.log('Error in signup route:', err); // Debugging log for signup
+        console.error('Signup error:', err);
         res.status(500).json(err);
     }
 });
@@ -26,18 +27,19 @@ router.post('/signup', async (req, res) => {
 // Login route (no withAuth needed)
 router.post('/login', async (req, res) => {
     try {
+        console.log('Login data:', req.body);
         const userData = await User.findOne({ where: { username: req.body.username } });
 
         if (!userData) {
-            console.log('User not found:', req.body.username); // Debugging log for user not found
             res.status(400).json({ message: 'Incorrect username or password, please try again' });
             return;
         }
 
         const validPassword = await bcrypt.compare(req.body.password, userData.password);
 
+        console.log('Password valid:', validPassword);
+
         if (!validPassword) {
-            console.log('Invalid password for user:', req.body.username); // Debugging log for invalid password
             res.status(400).json({ message: 'Incorrect username or password, please try again' });
             return;
         }
@@ -50,7 +52,7 @@ router.post('/login', async (req, res) => {
         });
 
     } catch (err) {
-        console.log('Error in login route:', err); // Debugging log for general login errors
+        console.error('Login error:', err);
         res.status(500).json(err);
     }
 });
