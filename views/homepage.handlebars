@@ -1,0 +1,12 @@
+{{> header}}
+
+<section>
+  {{#each posts}}
+    <article>
+      <h2>{{this.title}}</h2>
+      <p>by {{this.user.username}} on {{this.createdAt}}</p>
+      <p>{{this.content}}</p>
+      <a href="/post/{{this.id}}">Read more</a>
+    </article>
+  {{/each}}
+</section>
