@@ -1,0 +1,15 @@
+<h1>Welcome, {{username}}</h1>
+<h2>Your Posts</h2>
+{{#each posts}}
+  <div class="post">
+    <h3>{{title}}</h3>
+    <p>{{content}}</p>
+    <button class="edit-post" data-id="{{id}}">Edit</button>
+    <button class="delete-post" data-id="{{id}}">Delete</button>
+  </div>
+{{else}}
+  <p>You haven't created any posts yet.</p>
+{{/each}}
+<button id="new-post">Create New Post</button>
+
+<script src="/js/dashboard.js"></script> <!-- Script for handling dashboard actions -->
