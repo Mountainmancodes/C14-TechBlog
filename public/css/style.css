@@ -1,9 +1,10 @@
 :root {
-  --primary-color: #0d4468;
-  --secondary-color: #2c3e50;
-  --background-color: #f4f4f4;
-  --text-color: #333;
-  --accent-color: #4d231e;
+  --primary-color: #4d231e; /* Darker brown for accents */
+  --secondary-color: #302017; /* Dark brown for headers and footer */
+  --background-color: #e3f0dc; /* Light mint green for the background */
+  --text-color: #000000; /* Black text */
+  --header-text-color: #ffffff; /* White text for the header */
+  --header-background-color: #302017; /* Dark brown for the header background */
 }
 
 body {
@@ -17,10 +18,14 @@ body {
 }
 
 header {
-  background-color: var(--secondary-color);
+  background-color: var(--header-background-color);
   padding: 1rem;
   margin-bottom: 2rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  color: var(--header-text-color);
 }
 
 nav {
@@ -31,7 +36,7 @@ nav {
 
 nav a,
 nav button {
-  color: #fff;
+  color: var(--header-text-color);
   text-decoration: none;
   padding: 0.5rem 1rem;
   transition: background-color 0.3s ease;
@@ -40,7 +45,7 @@ nav button {
 
 nav a:hover,
 nav button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--primary-color);
 }
 
 .page-title {
@@ -100,7 +105,7 @@ nav button:hover {
 }
 
 .btn:hover {
-  background-color: #2980b9;
+  background-color: #3b1915;
 }
 
 .post-actions {
