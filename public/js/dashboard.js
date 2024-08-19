@@ -21,38 +21,30 @@ const newFormHandler = async (event) => {
   }
 };
 
-// Handle Edit Post
-const editHandler = (event) => {
+const editHandler = async (event) => {
   if (event.target.matches('.edit-post')) {
-    const postEl = event.target.closest('.post');
-    const title = prompt('Enter new title:', postEl.querySelector('.post-title').textContent);
-    const content = prompt('Enter new content:', postEl.querySelector('.post-content').textContent);
+    const id = event.target.getAttribute('data-id');
+    const title = prompt('Enter new title');
+    const content = prompt('Enter new content');
 
     if (title && content) {
-      const id = event.target.getAttribute('data-id');
-      updatePost(id, title, content);
+      const response = await fetch(`/api/posts/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ title, content }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        document.location.replace('/dashboard');
+      } else {
+        alert('Failed to update post');
+      }
     }
   }
 };
 
-// Handle Update Post
-const updatePost = async (id, title, content) => {
-  const response = await fetch(`/api/posts/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify({ title, content }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (response.ok) {
-    document.location.replace('/dashboard');
-  } else {
-    alert('Failed to update post');
-  }
-};
-
-// Handle Delete Post
 const deleteHandler = async (event) => {
   if (event.target.matches('.delete-post')) {
     const id = event.target.getAttribute('data-id');
@@ -69,7 +61,6 @@ const deleteHandler = async (event) => {
   }
 };
 
-// Event listeners
 document.querySelector('#new-post').addEventListener('click', () => {
   const postForm = `
     <form class="new-post-form">
@@ -79,10 +70,9 @@ document.querySelector('#new-post').addEventListener('click', () => {
     </form>
   `;
   document.querySelector('.post-list').insertAdjacentHTML('afterend', postForm);
-  
+
   document.querySelector('.new-post-form').addEventListener('submit', newFormHandler);
 });
 
-// Add event listeners for editing and deleting posts
 document.querySelector('.post-list').addEventListener('click', editHandler);
 document.querySelector('.post-list').addEventListener('click', deleteHandler);
