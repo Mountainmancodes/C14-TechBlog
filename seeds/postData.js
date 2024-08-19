@@ -2,7 +2,7 @@ const postData = [
   {
     title: 'The Future of JavaScript',
     content: 'JavaScript is evolving rapidly with new frameworks and features...',
-    user_id: 1, // Assuming user with ID 1 exists
+    user_id: 1, 
   },
   {
     title: 'Understanding Asynchronous Programming',
