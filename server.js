@@ -22,7 +22,6 @@ const sess = {
     maxAge: 60 * 60 * 1000, // 1 hour
     httpOnly: true,
     secure: false,
-    sameSite: 'strict',
   },
   resave: false,
   saveUninitialized: true,
@@ -30,6 +29,11 @@ const sess = {
     db: sequelize,
   }),
 };
+
+app.use((req, res, next) => {
+  console.log('Session Data:', req.session);
+  next();
+});
 
 app.use(session(sess));
 
