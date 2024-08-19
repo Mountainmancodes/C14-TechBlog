@@ -1,12 +1,11 @@
 const router = require('express').Router();
 const { User } = require('../../models');
 const bcrypt = require('bcrypt');
-const withAuth = require('../../utils/auth');
+const withAuth = require('../../utils/auth'); // Ensure withAuth is imported
 
 // Signup route (no withAuth needed)
 router.post('/signup', async (req, res) => {
     try {
-        console.log('Signup data:', req.body);
         const userData = await User.create({
             username: req.body.username,
             password: await bcrypt.hash(req.body.password, 10),
@@ -19,44 +18,42 @@ router.post('/signup', async (req, res) => {
             res.status(200).json(userData);
         });
     } catch (err) {
-        console.error('Signup error:', err);
         res.status(500).json(err);
     }
 });
 
 // Login route (no withAuth needed)
 router.post('/login', async (req, res) => {
-  try {
-      console.log('Login request received:', req.body);
-      const userData = await User.findOne({ where: { username: req.body.username } });
+    try {
+        console.log("Login request received with:", req.body);
 
-      if (!userData) {
-          console.log('No user found with that username.');
-          res.status(400).json({ message: 'Incorrect username or password, please try again' });
-          return;
-      }
+        const userData = await User.findOne({ where: { username: req.body.username } });
 
-      const validPassword = await bcrypt.compare(req.body.password, userData.password);
-      console.log('Valid password:', validPassword);
+        if (!userData) {
+            console.log("No user found with that username");
+            res.status(400).json({ message: 'Incorrect username or password, please try again' });
+            return;
+        }
 
-      if (!validPassword) {
-          console.log('Invalid password provided.');
-          res.status(400).json({ message: 'Incorrect username or password, please try again' });
-          return;
-      }
+        const validPassword = await bcrypt.compare(req.body.password, userData.password);
 
-      req.session.save(() => {
-          req.session.user_id = userData.id;
-          req.session.loggedIn = true;
+        if (!validPassword) {
+            console.log("Password does not match");
+            res.status(400).json({ message: 'Incorrect username or password, please try again' });
+            return;
+        }
 
-          console.log('User logged in:', userData.username);
-          res.json({ user: userData, message: 'You are now logged in!' });
-      });
+        req.session.save(() => {
+            req.session.user_id = userData.id;
+            req.session.loggedIn = true;
 
-  } catch (err) {
-      console.error('Login error:', err);
-      res.status(500).json(err);
-  }
+            res.json({ user: userData, message: 'You are now logged in!' });
+        });
+
+    } catch (err) {
+        console.log("Error during login:", err);
+        res.status(500).json(err);
+    }
 });
 
 // Logout route (protected with withAuth)
