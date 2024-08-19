@@ -1,5 +1,3 @@
-const { Post } = require('../models');
-
 const postData = [
   {
     title: 'The Future of JavaScript',
@@ -18,6 +16,4 @@ const postData = [
   }
 ];
 
-const seedPosts = () => Post.bulkCreate(postData);
-
-module.exports = seedPosts;
+module.exports = postData;
