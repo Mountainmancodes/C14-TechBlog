@@ -1,18 +1,28 @@
-<h1>Welcome, {{username}}</h1>
+<h1>Your Dashboard</h1>
 <h2>Your Posts</h2>
-<div class="post-list">
-  {{#each posts}}
-    <div class="post" data-id="{{id}}">
-      <h3 class="post-title">{{title}}</h3>
-      <p class="post-content">{{content}}</p>
-      <button class="edit-post" data-id="{{id}}">Edit</button>
-      <button class="delete-post" data-id="{{id}}">Delete</button>
-    </div>
-  {{else}}
-    <p>You haven't created any posts yet.</p>
-  {{/each}}
-</div>
-<button id="new-post">Create New Post</button>
+{{#each posts}}
+  <div class="post" data-id="{{id}}">
+    <h3>{{title}}</h3>
+    <p>{{content}}</p>
 
-<!-- Include the dashboard.js script -->
+    <!-- Post Actions -->
+    <div class="post-actions">
+      <button class="edit-post btn">Edit</button>
+      <button class="delete-post btn" data-id="{{id}}">Delete</button>
+    </div>
+
+    <!-- Edit Form (hidden by default) -->
+    <form class="edit-form" style="display: none;">
+      <input type="text" class="edit-title" value="{{title}}" />
+      <textarea class="edit-content">{{content}}</textarea>
+      <button type="submit" class="btn">Save Changes</button>
+      <button type="button" class="cancel-edit btn cancel-btn">Cancel</button>
+    </form>
+  </div>
+{{else}}
+  <p>You haven't created any posts yet.</p>
+{{/each}}
+<button id="new-post" class="btn">Create New Post</button>
+
+<!--  dashboard.js script -->
 <script src="/js/dashboard.js"></script>
