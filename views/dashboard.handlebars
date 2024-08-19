@@ -3,8 +3,8 @@
 <div class="post-list">
   {{#each posts}}
     <div class="post" data-id="{{id}}">
-      <h3>{{title}}</h3>
-      <p>{{content}}</p>
+      <h3 class="post-title">{{title}}</h3>
+      <p class="post-content">{{content}}</p>
       <button class="edit-post" data-id="{{id}}">Edit</button>
       <button class="delete-post" data-id="{{id}}">Delete</button>
     </div>
@@ -14,5 +14,5 @@
 </div>
 <button id="new-post">Create New Post</button>
 
-<!-- Make sure the script is included -->
-<script src="/js/dashboard.js"></script>
+<!-- Include the dashboard.js script -->
+<script src="../public/js/dashboard.js"></script>
