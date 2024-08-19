@@ -59,7 +59,7 @@ SESSION_SECRET='your_secret_key'
 
 ## Example(s)
 
-![Tech Blog Deployed Site](https://c14-techblog.onrender.com/)
+[Deployed Tech Blog](https://c14-techblog.onrender.com)
 
 ![Example 1](./images/Home%20Screen.png)
 
