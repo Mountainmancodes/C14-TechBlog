@@ -21,58 +21,27 @@ const newFormHandler = async (event) => {
   }
 };
 
-const editHandler = async (event) => {
-  if (event.target.matches('.edit-post')) {
-    const id = event.target.getAttribute('data-id');
-    const title = prompt('Enter new title');
-    const content = prompt('Enter new content');
-
-    if (title && content) {
-      const response = await fetch(`/api/posts/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify({ title, content }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        document.location.replace('/dashboard');
-      } else {
-        alert('Failed to update post');
-      }
-    }
-  }
-};
-
-const deleteHandler = async (event) => {
-  if (event.target.matches('.delete-post')) {
-    const id = event.target.getAttribute('data-id');
-
-    const response = await fetch(`/api/posts/${id}`, {
-      method: 'DELETE',
-    });
-
-    if (response.ok) {
-      document.location.replace('/dashboard');
-    } else {
-      alert('Failed to delete post');
-    }
+const cancelNewPost = () => {
+  const newPostForm = document.querySelector('.new-post-form-container');
+  if (newPostForm) {
+    newPostForm.remove(); // Remove the form container from the DOM
   }
 };
 
 document.querySelector('#new-post').addEventListener('click', () => {
   const postForm = `
-    <form class="new-post-form">
-      <input type="text" id="post-title" placeholder="Post Title" />
-      <textarea id="post-content" placeholder="Post Content"></textarea>
-      <button type="submit">Create Post</button>
-    </form>
+    <div class="new-post-form-container">
+      <form class="new-post-form">
+        <h3>Create a New Post</h3>
+        <input type="text" id="post-title" placeholder="Post Title" />
+        <textarea id="post-content" placeholder="Post Content"></textarea>
+        <button type="submit">Create Post</button>
+        <button type="button" id="cancel-post">Cancel</button>
+      </form>
+    </div>
   `;
   document.querySelector('.post-list').insertAdjacentHTML('afterend', postForm);
 
   document.querySelector('.new-post-form').addEventListener('submit', newFormHandler);
+  document.querySelector('#cancel-post').addEventListener('click', cancelNewPost);
 });
-
-document.querySelector('.post-list').addEventListener('click', editHandler);
-document.querySelector('.post-list').addEventListener('click', deleteHandler);
