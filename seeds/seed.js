@@ -1,28 +1,34 @@
 const sequelize = require('../config/connection');
-const { User } = require('../models');
+const { User, Post, Comment } = require('../models');
 const bcrypt = require('bcrypt');
 
-const userData = [
-    {
-        username: 'user1',
-        password: bcrypt.hashSync('password123', 10)
-    },
-    {
-        username: 'user2',
-        password: bcrypt.hashSync('password123', 10)
-    },
-    // Add more users as needed
-];
+const userData = require('./userData.json');
+const postData = require('./postData.json');
+const commentData = require('./commentData.json');
 
 const seedDatabase = async () => {
-    await sequelize.sync({ force: true });
+  await sequelize.sync({ force: true });
 
-    await User.bulkCreate(userData, {
-        individualHooks: true,
-        returning: true,
+  const users = await User.bulkCreate(userData, {
+    individualHooks: true,
+    returning: true,
+  });
+
+  for (const post of postData) {
+    await Post.create({
+      ...post,
+      user_id: users[Math.floor(Math.random() * users.length)].id,
     });
+  }
 
-    process.exit(0);
+  for (const comment of commentData) {
+    await Comment.create({
+      ...comment,
+      user_id: users[comment.user_id - 1].id,
+    });
+  }
+
+  process.exit(0);
 };
 
 seedDatabase();

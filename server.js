@@ -1,9 +1,10 @@
-require('dotenv').config();
-const path = require('path'); // Make sure this line is at the top
+const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+
+const { strict } = require('assert');
 const routes = require('./controllers');
 const sequelize = require('./config/connection');
 const helpers = require('./utils/helpers');
@@ -11,17 +12,13 @@ const helpers = require('./utils/helpers');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-if (!process.env.SESSION_SECRET) {
-  console.error('SESSION_SECRET is not defined in the environment variables.');
-  process.exit(1); // Exit the process to prevent running without a session secret
-}
-
 const sess = {
-  secret: process.env.SESSION_SECRET || 'defaultSecret',
+  secret: process.env.SESSION_SECRET,
   cookie: {
-    maxAge: 60 * 60 * 1000, // 1 hour
+    maxAge: 60 * 60 * 1000,
     httpOnly: true,
     secure: false,
+    sameSite: 'strict',
   },
   resave: false,
   saveUninitialized: true,
@@ -29,11 +26,6 @@ const sess = {
     db: sequelize,
   }),
 };
-
-app.use((req, res, next) => {
-  console.log('Session Data:', req.session);
-  next();
-});
 
 app.use(session(sess));
 

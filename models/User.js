@@ -25,22 +25,21 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [8], // Password must be at least 8 characters long
+        len: [8],
       },
     },
   },
   {
     hooks: {
-      async beforeCreate(newUserData) {
+      beforeCreate: async (newUserData) => {
         newUserData.password = await bcrypt.hash(newUserData.password, 10);
-        console.log('Hashed Password:', newUserData.password); // Log the hashed password
         return newUserData;
       },
-      async beforeUpdate(updatedUserData) {
-        if (updatedUserData.password) {
-          updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
-          console.log('Updated Hashed Password:', updatedUserData.password);
-        }
+      beforeUpdate: async (updatedUserData) => {
+        updatedUserData.password = await bcrypt.hash(
+          updatedUserData.password,
+          10,
+        );
         return updatedUserData;
       },
     },
@@ -49,7 +48,7 @@ User.init(
     freezeTableName: true,
     underscored: true,
     modelName: 'user',
-  }
+  },
 );
 
 module.exports = User;
