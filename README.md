@@ -9,7 +9,7 @@ Tech Blog is in a MVC-style. Tech Blog is a site where developers can publish th
 - [Environment Variables](#environment-variables)
 - [Usage](#usage)
 - [Live Deployment](#live-deployment)
-- [Local Deployment](#local-deployment)
+- [Local Development](#local-development)
 - [Example](#example)
 - [License](#license)
 - [Source Code](#source-code)
@@ -57,7 +57,7 @@ SESSION_SECRET='your_secret_key'
 5. Start the server: `npm start`
 6. Visit `http://localhost:3001` in your browser
 
-## Example(s)
+## Example
 
 [Deployed Tech Blog](https://c14-techblog.onrender.com) <-- Deployed Tech Blog
 
